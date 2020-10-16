@@ -43,7 +43,7 @@ A docker volume `node-modules` is created to store NPM packages and is reused ac
 Run the following commands to bootstrap your environment if you are unable to run the application using Docker
 
 ```bash
-cd my_flask_app
+cd micro-apps
 pip install -r requirements/dev.txt
 npm install
 npm start  # run the webpack dev server and flask server using concurrently

@@ -17,7 +17,7 @@ services:
       target: development
       args:
         <<: *build_args
-    image: "my_flask_app-development"
+    image: "micro-apps-development"
     ports:
       - "5000:5000"
       - "2992:2992"
@@ -29,7 +29,7 @@ services:
       target: production
       args:
         <<: *build_args
-    image: "my_flask_app-production"
+    image: "micro-apps-production"
     ports:
       - "5000:5000"
     environment:
@@ -49,7 +49,7 @@ services:
     environment:
       FLASK_ENV: production
       FLASK_DEBUG: 0
-    image: "my_flask_app-manage"
+    image: "micro-apps-manage"
     stdin_open: true
     tty: true
     <<: *default_volumes
