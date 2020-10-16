@@ -5,8 +5,8 @@ import sys
 
 from flask import Flask, render_template
 
-from micro-apps import commands, public, user
-from micro-apps.extensions import (
+from micro_ops import commands, public, user
+from micro_ops.extensions import (
     bcrypt,
     cache,
     csrf_protect,
@@ -18,7 +18,7 @@ from micro-apps.extensions import (
 )
 
 
-def create_app(config_object="micro-apps.settings"):
+def create_app(config_object="micro_ops.settings"):
     """Create application factory, as explained here: http://flask.pocoo.org/docs/patterns/appfactories/.
 
     :param config_object: The configuration object to use.

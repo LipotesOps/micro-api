@@ -49,7 +49,7 @@ env/
 /node_modules/
 
 # webpack-built files
-/micro-apps/static/build/
+/micro_ops/static/build/
 
 # Configuration
 .env3.6

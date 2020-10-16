@@ -33,7 +33,7 @@ module.exports = {
   output: {
     chunkFilename: "[id].js",
     filename: "[name].bundle.js",
-    path: path.join(__dirname, "micro-apps", "static", "build"),
+    path: path.join(__dirname, "micro_ops", "static", "build"),
     publicPath: "/static/build/"
   },
   resolve: {

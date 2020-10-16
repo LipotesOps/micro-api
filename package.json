@@ -1,5 +1,5 @@
 {
-  "name": "micro-apps",
+  "name": "micro_ops",
   "version": "1.0.0",
   "description": "A flasky app.",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourGithubUsername/micro-apps.git"
+    "url": "git+https://github.com/yourGithubUsername/micro_ops.git"
   },
   "author": "First Last",
   "license": "MIT",
@@ -26,9 +26,9 @@
     "node": ">=12"
   },
   "bugs": {
-    "url": "https://github.com/yourGithubUsername/micro-apps/issues"
+    "url": "https://github.com/yourGithubUsername/micro_ops/issues"
   },
-  "homepage": "https://github.com/yourGithubUsername/micro-apps#readme",
+  "homepage": "https://github.com/yourGithubUsername/micro_ops#readme",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.0",
     "bootstrap": "^4.5.2",

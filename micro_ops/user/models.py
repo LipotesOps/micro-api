@@ -4,8 +4,8 @@ import datetime as dt
 
 from flask_login import UserMixin
 
-from micro-apps.database import Column, PkModel, db, reference_col, relationship
-from micro-apps.extensions import bcrypt
+from micro_ops.database import Column, PkModel, db, reference_col, relationship
+from micro_ops.extensions import bcrypt
 
 
 class Role(PkModel):

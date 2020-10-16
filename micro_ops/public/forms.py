@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired
 
-from micro-apps.user.models import User
+from micro_ops.user.models import User
 
 
 class LoginForm(FlaskForm):

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Test forms."""
 
-from micro-apps.public.forms import LoginForm
-from micro-apps.user.forms import RegisterForm
+from micro_ops.public.forms import LoginForm
+from micro_ops.user.forms import RegisterForm
 
 
 class TestRegisterForm:

@@ -4,7 +4,7 @@ import datetime as dt
 
 import pytest
 
-from micro-apps.user.models import Role, User
+from micro_ops.user.models import Role, User
 
 from .factories import UserFactory
 

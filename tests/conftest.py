@@ -6,8 +6,8 @@ import logging
 import pytest
 from webtest import TestApp
 
-from micro-apps.app import create_app
-from micro-apps.database import db as _db
+from micro_ops.app import create_app
+from micro_ops.database import db as _db
 
 from .factories import UserFactory
 

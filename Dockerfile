@@ -17,7 +17,7 @@ COPY package.json ./
 RUN npm install
 
 COPY webpack.config.js autoapp.py ./
-COPY micro-apps micro-apps
+COPY micro_ops micro_ops
 COPY assets assets
 COPY .env.example .env
 RUN npm run-script build
@@ -32,7 +32,7 @@ RUN chown -R sid:sid /app
 USER sid
 ENV PATH="/home/sid/.local/bin:${PATH}"
 
-COPY --from=builder --chown=sid:sid /app/micro-apps/static /app/micro-apps/static
+COPY --from=builder --chown=sid:sid /app/micro_ops/static /app/micro_ops/static
 COPY requirements requirements
 RUN pip install --no-cache --user -r requirements/prod.txt
 

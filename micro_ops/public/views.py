@@ -11,11 +11,11 @@ from flask import (
 )
 from flask_login import login_required, login_user, logout_user
 
-from micro-apps.extensions import login_manager
-from micro-apps.public.forms import LoginForm
-from micro-apps.user.forms import RegisterForm
-from micro-apps.user.models import User
-from micro-apps.utils import flash_errors
+from micro_ops.extensions import login_manager
+from micro_ops.public.forms import LoginForm
+from micro_ops.user.forms import RegisterForm
+from micro_ops.user.models import User
+from micro_ops.utils import flash_errors
 
 blueprint = Blueprint("public", __name__, static_folder="../static")
 
