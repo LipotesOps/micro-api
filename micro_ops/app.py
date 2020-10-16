@@ -8,6 +8,7 @@ from flask_graphql import GraphQLView
 from graphene import ObjectType, String, Schema
 
 from micro_ops import commands, public, user
+from micro_ops.itsc import models
 from micro_ops.extensions import (
     bcrypt,
     cache,
