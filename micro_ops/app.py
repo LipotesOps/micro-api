@@ -4,6 +4,8 @@ import logging
 import sys
 
 from flask import Flask, render_template
+from flask_graphql import GraphQLView
+from graphene import ObjectType, String, Schema
 
 from micro_ops import commands, public, user
 from micro_ops.extensions import (
@@ -18,12 +20,34 @@ from micro_ops.extensions import (
 )
 
 
+class Query(ObjectType):
+    # this defines a Field `hello` in our Schema with a single Argument `name`
+    hello = String(name=String(default_value="stranger"))
+    goodbye = String()
+
+    # our Resolver method takes the GraphQL context (root, info) as well as
+    # Argument (name) for the Field and returns data for the query Response
+    def resolve_hello(root, info, name):
+        return 'Hello ' + name
+
+    def resolve_goodbye(root, info):
+        return 'See ya!'
+
+schema = Schema(query=Query)
+
+
 def create_app(config_object="micro_ops.settings"):
     """Create application factory, as explained here: http://flask.pocoo.org/docs/patterns/appfactories/.
 
     :param config_object: The configuration object to use.
     """
     app = Flask(__name__.split(".")[0])
+
+    app.add_url_rule('/graphql', view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True))
+
+    # Optional, for adding batch query support (used in Apollo-Client)
+    # app.add_url_rule('/graphql/batch', view_func=GraphQLView.as_view('graphql', schema=schema, batch=True))
+    
     app.config.from_object(config_object)
     register_extensions(app)
     register_blueprints(app)
@@ -39,7 +63,7 @@ def register_extensions(app):
     bcrypt.init_app(app)
     cache.init_app(app)
     db.init_app(app)
-    csrf_protect.init_app(app)
+    # csrf_protect.init_app(app)
     login_manager.init_app(app)
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
