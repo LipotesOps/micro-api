@@ -58,3 +58,4 @@ env/
 *.db
 
 __pycache__
+.vscode/settings.json
