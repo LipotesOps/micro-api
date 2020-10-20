@@ -1,46 +1,67 @@
+from datetime import datetime
+
+def genTagNum():
+    fmt = '%Y%m%d%H%M%S'
+    return datetime.now().strftime(fmt)
+
 schema = {
-    'firstname':{
-            'type':'string',
-            'minlength': 1,
-            'maxlength':10,
-        },
-    'lastname':{
-            'type': 'string',
-            'minlength': 1,
-            'maxlength': 115,
-            'required': True
-        },
-    'role':{
-        'type':'list',
-        'allowed':["author","contributor","copy"],
+    # Schema definition, based on Cerberus grammar. Check the Cerberus project
+    # (https://github.com/pyeve/cerberus) for details.
+    'firstname': {
+        'type': 'string',
+        'minlength': 1,
+        'maxlength': 10,
     },
-    'location':{
-        'type':'dict',
-        'schema':{
-            'address':{'type':'string'},
-            'city':{'type':'string'}
-        }
+    'lastname': {
+        'type': 'string',
+        'minlength': 1,
+        'maxlength': 15,
+        'required': True,
+        # talk about hard constraints! For the purpose of the demo
+        # 'lastname' is an API entry-point, so we need it to be unique.
+        # 'unique': True,
     },
-    'born':{
-        'type':'datetime',
+    # 'role' is a list, and can only contain values from 'allowed'.
+    'role': {
+        'type': 'list',
+        'allowed': ["author", "contributor", "copy"],
+    },
+    # An embedded 'strongly-typed' dictionary.
+    'location': {
+        'type': 'dict',
+        'schema': {
+            'address': {'type': 'string'},
+            'city': {'type': 'string'}
+        },
+    },
+    'born': {
+        # 'type': 'datetime',
+        'default': genTagNum()
     },
 }
 
-people= {
-    'item_title': 'people',
-    # 默认情况下查找资源要同过/people/<objectid>才能找到
-    # 这里添加新的只读路径，可以通过lastname来获得资源
+people = {
+    # 'title' tag used in item links. Defaults to the resource title minus
+    # the final, plural 's' (works fine in most cases but not for 'people')
+    'item_title': 'person',
+
+    # by default the standard item entry point is defined as
+    # '/people/<ObjectId>'. We leave it untouched, and we also enable an
+    # additional read-only entry point. This way consumers can also perform
+    # GET requests at '/people/<lastname>'.
     'additional_lookup': {
-        'url':'regex("[\w]+")',
-        'field':'lastname',
+        'url': 'regex("[\w]+")',
+        'field': 'lastname'
     },
-    # 控制缓存
-    'cache_control':'max-age=10,must-revalidate',
+
+    # We choose to override global cache-control directives for this resource.
+    'cache_control': 'max-age=10,must-revalidate',
     'cache_expires': 10,
-    # 覆盖全局的读写方法
-    'resource_methods':['GET','POST'],
-    # 设定结构
-    'schema':schema,
+
+    # most global settings can be overridden at resource level
+    'resource_methods': ['GET', 'POST'],
+
+    'schema': schema
 }
 
 
