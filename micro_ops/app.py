@@ -4,6 +4,7 @@ import logging
 import sys
 
 from flask import Flask, render_template
+from eve import Eve
 from flask_graphql import GraphQLView
 from graphene import ObjectType, String, Schema
 
@@ -42,7 +43,8 @@ def create_app(config_object="micro_ops.settings"):
 
     :param config_object: The configuration object to use.
     """
-    app = Flask(__name__.split(".")[0])
+    # app = Flask(__name__.split(".")[0])
+    app = Eve(settings='eve_settings.py')
 
     app.add_url_rule('/graphql', view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True))
 
@@ -64,7 +66,7 @@ def register_extensions(app):
     bcrypt.init_app(app)
     cache.init_app(app)
     db.init_app(app)
-    csrf_protect.init_app(app)
+    # csrf_protect.init_app(app)
     login_manager.init_app(app)
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
