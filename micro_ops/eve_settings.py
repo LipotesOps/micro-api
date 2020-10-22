@@ -2,12 +2,20 @@ import os
 # import sys
 # sys.path.append(os.getcwd())
 from micro_ops.user.resources.people import people
+from micro_ops.cmdb.schema.object import object as cmdb_object
+from micro_ops.cmdb.schema.category import category
 
-DOMAIN = {'people': people}
+DOMAIN = {
+    'people': people,
+    'category': category,
+    'object': cmdb_object
+    }
 
+# 这里统一规定，resource 相当于 mongo collection，item 相当于 mongo document
 # 启用对资源组的增删查
 # 如果忽略这一行，默认只提供查
 RESOURCE_METHODS = ['GET', 'POST', 'DELETE']
+
 
 # 启用对单个资源的增删改查
 # 忽略情况下只提供查

@@ -8,12 +8,15 @@ def genTagNum():
 schema = {
     # Schema definition, based on Cerberus grammar. Check the Cerberus project
     # (https://github.com/pyeve/cerberus) for details.
-    'firstname': {
+    'object_id': {
         'type': 'string',
         'minlength': 1,
-        'maxlength': 10,
+        'maxlength': 32,
+        'regex': "^[A-Z]+$",
+        'required': True,
+        'unique': True,
     },
-    'lastname': {
+    'name': {
         'type': 'string',
         'minlength': 1,
         'maxlength': 15,
@@ -22,26 +25,23 @@ schema = {
         # 'lastname' is an API entry-point, so we need it to be unique.
         # 'unique': True,
     },
-    # 'role' is a list, and can only contain values from 'allowed'.
-    'role': {
-        'type': 'list',
-        'allowed': ["author", "contributor", "copy"],
-    },
     # An embedded 'strongly-typed' dictionary.
-    'location': {
+    'category': {
         'type': 'dict',
         'schema': {
-            'address': {'type': 'string'},
-            'city': {'type': 'string'}
+            '_id': {'type': 'objectid'},
+            '_version': {'type': 'integer'}
         },
-    },
-    'born': {
-        'type': 'datetime',
-        'default': pytz.timezone('Asia/Shanghai').localize(datetime.now())
+        'data_relation': {
+            'resource': 'category',
+            'field': '_id',
+            'embeddable': True,
+            'version': True,
+        },
     },
 }
 
-people = {
+object = {
     # 'title' tag used in item links. Defaults to the resource title minus
     # the final, plural 's' (works fine in most cases but not for 'people')
     'item_title': 'person',
@@ -52,7 +52,7 @@ people = {
     # GET requests at '/people/<lastname>'.
     'additional_lookup': {
         'url': 'regex("[\w]+")',
-        'field': 'lastname'
+        'field': 'object_id'
     },
 
     # We choose to override global cache-control directives for this resource.
@@ -60,7 +60,8 @@ people = {
     'cache_expires': 10,
 
     # most global settings can be overridden at resource level
-    # 'resource_methods': ['GET'],
+    # 'resource_methods': ['GET', 'POST'],
+    # 'item_methods': ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
 
     'schema': schema
 }
