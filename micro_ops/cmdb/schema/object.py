@@ -1,4 +1,5 @@
 from datetime import datetime
+from operator import truediv
 import pytz
 
 def genTagNum():
@@ -63,7 +64,8 @@ object = {
     # 'resource_methods': ['GET', 'POST'],
     # 'item_methods': ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
 
-    'schema': schema
+    'schema': schema,
+    'soft_delete': True,
 }
 
 
