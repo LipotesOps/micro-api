@@ -6,6 +6,8 @@ def genTagNum():
     fmt = '%Y%m%d%H%M%S'
     return datetime.now().strftime(fmt)
 
+object_default_schema = {}
+
 schema = {
     # Schema definition, based on Cerberus grammar. Check the Cerberus project
     # (https://github.com/pyeve/cerberus) for details.
@@ -26,6 +28,11 @@ schema = {
         # 'lastname' is an API entry-point, so we need it to be unique.
         # 'unique': True,
     },
+    # 模型描述
+    'memo': {
+        'type': 'string',
+        'maxlength': 250
+    },
     # An embedded 'strongly-typed' dictionary.
     'category': {
         'type': 'dict',
@@ -40,6 +47,9 @@ schema = {
             'version': True,
         },
     },
+    'object_schema':{
+        'type': 'dict',
+    }
 }
 
 object = {
