@@ -38,7 +38,8 @@ schema = {
         'type': 'dict',
         'schema': {
             '_id': {'type': 'objectid'},
-            '_version': {'type': 'integer'}
+            '_version': {'type': 'integer'},
+            'name': {'type': 'string'}
         },
         'data_relation': {
             'resource': 'category',

@@ -8,7 +8,7 @@ def genTagNum():
 schema = {
     # Schema definition, based on Cerberus grammar. Check the Cerberus project
     # (https://github.com/pyeve/cerberus) for details.
-    'category_id': {
+    'category_key': {
         'type': 'string',
         'minlength': 1,
         'maxlength': 32,
@@ -38,7 +38,7 @@ category = {
     # GET requests at '/people/<lastname>'.
     'additional_lookup': {
         'url': 'regex("[\w]+")',
-        'field': 'category_id'
+        'field': 'category_key'
     },
 
     # We choose to override global cache-control directives for this resource.
