@@ -9,6 +9,3 @@ class Flow(PkModel):
 
     __tablename__ = "flow"
     name = Column(db.String(80), unique=True, nullable=False)
-
-
-

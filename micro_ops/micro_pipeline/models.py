@@ -11,6 +11,3 @@ class Pipeline(PkModel):
     __tablename__ = "pipeline"
     name = Column(db.String(80), nullable=False)
     app_id = Column(db.string(32))
-
-
-
