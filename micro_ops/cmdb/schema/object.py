@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
+
 from datetime import datetime
-from operator import truediv
-import pytz
 
 def genTagNum():
     fmt = '%Y%m%d%H%M%S'
     return datetime.now().strftime(fmt)
+
 
 object_default_schema = {}
 
@@ -48,7 +49,7 @@ schema = {
             'version': True,
         },
     },
-    'object_schema':{
+    'object_schema': {
         'type': 'dict',
     }
 }
