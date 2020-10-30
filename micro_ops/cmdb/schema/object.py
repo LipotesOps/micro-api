@@ -48,7 +48,7 @@ schema = {
         },
     },
     "object_schema": {
-        "type": "dict",
+        "type": "list",
     },
 }
 
