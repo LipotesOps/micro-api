@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """pipeline views."""
-from flask import Blueprint
-from flask_login import login_required
+from flask import Blueprint, render_template
 
 blueprint = Blueprint("pipeline", __name__, url_prefix="/pipeline")
 
