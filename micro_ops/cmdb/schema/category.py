@@ -1,7 +1,5 @@
 from datetime import datetime
 
-import pytz
-
 
 def genTagNum():
     fmt = "%Y%m%d%H%M%S"
