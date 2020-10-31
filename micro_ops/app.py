@@ -3,13 +3,12 @@
 import logging
 import sys
 
-from flask import Flask, render_template, current_app
 from eve import Eve
+from flask import current_app, render_template
 from flask_graphql import GraphQLView
-from graphene import ObjectType, String, Schema
+from graphene import ObjectType, Schema, String
 
 from micro_ops import commands, public, user
-from micro_ops.itsc import models
 from micro_ops.extensions import (
     bcrypt,
     cache,
@@ -85,7 +84,7 @@ def register_extensions(app):
     bcrypt.init_app(app)
     cache.init_app(app)
     db.init_app(app)
-    # csrf_protect.init_app(app)
+    csrf_protect.init_app(app)
     login_manager.init_app(app)
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)

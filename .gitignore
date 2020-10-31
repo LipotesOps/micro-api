@@ -52,7 +52,7 @@ env/
 /micro_ops/static/build/
 
 # Configuration
-.env3.6
+.env*
 
 # Development database
 *.db
