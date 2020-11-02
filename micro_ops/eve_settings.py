@@ -1,7 +1,7 @@
 import os
 
-from micro_ops.cmdb.schema.category import category
-from micro_ops.cmdb.schema.object import object as cmdb_object
+from micro_ops.cmdb.category import category
+from micro_ops.cmdb.object import object as cmdb_object
 
 # import sys
 # sys.path.append(os.getcwd())
