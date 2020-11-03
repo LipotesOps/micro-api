@@ -17,7 +17,7 @@ def update_schema(resource, request):
     print("object: {} is modified!".format(resource))
 
 
-schema = {
+schema_template = {
     # Schema definition, based on Cerberus grammar. Check the Cerberus project
     # (https://github.com/pyeve/cerberus) for details.
     "object_id": {
@@ -50,7 +50,7 @@ schema = {
     },
 }
 
-music = {
+resource_definition = {
     # 'title' tag used in item links. Defaults to the resource title minus
     # the final, plural 's' (works fine in most cases but not for 'people')
     "item_title": "person",
@@ -65,5 +65,5 @@ music = {
     # most global settings can be overridden at resource level
     # 'resource_methods': ['GET', 'POST'],
     # 'item_methods': ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
-    "schema": schema,
+    "schema": schema_template,
 }
