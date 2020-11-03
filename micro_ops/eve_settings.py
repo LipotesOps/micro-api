@@ -1,13 +1,13 @@
 import os
 
 from micro_ops.cmdb.category import category
-from micro_ops.cmdb.object import object as cmdb_object
+from micro_ops.cmdb.resource_definition import resource_definition
 
 # import sys
 # sys.path.append(os.getcwd())
 from micro_ops.user.resources.people import people
 
-DOMAIN = {"people": people, "category": category, "object": cmdb_object}
+DOMAIN = {"people": people, "category": category, "resource": resource_definition}
 
 # 这里统一规定，resource 相当于 mongo collection，item 相当于 mongo document
 # 启用对资源组的增删查

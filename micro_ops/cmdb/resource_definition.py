@@ -52,10 +52,16 @@ schema = {
     },
 }
 
-object = {
+resource_definition = {
     # 'title' tag used in item links. Defaults to the resource title minus
     # the final, plural 's' (works fine in most cases but not for 'people')
-    "item_title": "person",
+    "item_title": "resource_definition",
+    # customise url endpoint
+    "url": "resource",
+    # 自定义collection
+    "datasource": {
+        "source": "resource_definition",
+    },
     # by default the standard item entry point is defined as
     # '/people/<ObjectId>'. We leave it untouched, and we also enable an
     # additional read-only entry point. This way consumers can also perform
