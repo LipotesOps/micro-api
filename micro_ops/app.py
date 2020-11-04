@@ -46,8 +46,8 @@ def create_app(config_object="micro_ops.settings"):
     """
     # app = Flask(__name__.split(".")[0])
     app = Eve(settings="eve_settings.py")
-    app.on_post_POST_object += update_schema
-    app.on_post_PATCH_object += update_schema
+    app.on_post_POST_resource += update_schema
+    app.on_post_PATCH_resource += update_schema
 
     app.add_url_rule(
         "/graphql",

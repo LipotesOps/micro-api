@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 """Helper utilities and decorators."""
+
+import json
+import copy
+
 from flask import flash
 from flask import current_app
 
@@ -13,9 +17,33 @@ def flash_errors(form, category="warning"):
 
 # on_pre_<method> and a on_pre_<method>_<resource>
 def update_schema(resource, request):
-    current_app.register_resource("music", music)
+
+    resource_definition = copy.deepcopy(resource_definition_template)
+
+    resource_definition_data = json.loads(resource.data)
+    resource_attr_list = resource_definition_data.object_schema
+    schema = generate_schema(resource_attr_list)
+
+    domain_key = resource_definition_data["object_id"]
+    resource_definition["schema"] = schema
+
+    current_app.register_resource(domain_key, resource_definition)
     print("object: {} is modified!".format(resource))
 
+
+# 遍历属性列表，返回一个schema
+def generate_schema(resource_attr_list):
+    # 初始一个空的schema
+    schema = {}
+    for resource_attr in resource_attr_list:
+        data_type = resource_attr["type"]
+        field_schema = FIELD_MAP[data_type]
+        print(resource_attr)
+
+    return schema
+
+
+FIELD_MAP = {}
 
 schema_template = {
     # Schema definition, based on Cerberus grammar. Check the Cerberus project
@@ -50,10 +78,16 @@ schema_template = {
     },
 }
 
-resource_definition = {
+resource_definition_template = {
     # 'title' tag used in item links. Defaults to the resource title minus
     # the final, plural 's' (works fine in most cases but not for 'people')
-    "item_title": "person",
+    "item_title": "resource_definition",
+    # customise url endpoint
+    "url": "resource",
+    # 自定义collection
+    "datasource": {
+        "source": "resource_definition",
+    },
     # by default the standard item entry point is defined as
     # '/people/<ObjectId>'. We leave it untouched, and we also enable an
     # additional read-only entry point. This way consumers can also perform
@@ -66,4 +100,6 @@ resource_definition = {
     # 'resource_methods': ['GET', 'POST'],
     # 'item_methods': ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
     "schema": schema_template,
+    "soft_delete": True,
+    "versioning": False,
 }
