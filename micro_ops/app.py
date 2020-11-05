@@ -19,7 +19,7 @@ from micro_ops.extensions import (
     login_manager,
     migrate,
 )
-from micro_ops.utils import update_schema
+from micro_ops.event_hook import update_schema
 
 
 class Query(ObjectType):
