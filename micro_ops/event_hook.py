@@ -13,11 +13,15 @@ def update_schema(resource, request):
     resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
 
     definition_data = json.loads(resource.data)
-    resource_attr_list = definition_data.object_schema
+    resource_attr_list = definition_data["object_schema"]
     schema = generate_schema(resource_attr_list)
 
     domain_key = definition_data["object_id"]
     resource_definition["schema"] = schema
+
+    resource_definition["item_title"] = domain_key
+    resource_definition["url"] = domain_key
+    resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
 
     current_app.register_resource(domain_key, resource_definition)
     print("object: {} is modified!".format(domain_key))
@@ -88,18 +92,18 @@ SCHEMA_TEMPLATE = {
 DEFINITION_TEMPLATE = {
     # 'title' tag used in item links. Defaults to the resource title minus
     # the final, plural 's' (works fine in most cases but not for 'people')
-    "item_title": "resource_definition",
+    "item_title": "",
     # customise url endpoint
-    "url": "resource",
+    "url": "",
     # 自定义collection
     "datasource": {
-        "source": "resource_definition",
+        "source": "",
     },
     # by default the standard item entry point is defined as
     # '/people/<ObjectId>'. We leave it untouched, and we also enable an
     # additional read-only entry point. This way consumers can also perform
     # GET requests at '/people/<lastname>'.
-    "additional_lookup": {"url": r'regex("[\w]+")', "field": "object_id"},
+    "additional_lookup": {"url": r'regex("[\w]+")', "field": "name"},
     # We choose to override global cache-control directives for this resource.
     "cache_control": "max-age=10,must-revalidate",
     "cache_expires": 10,
