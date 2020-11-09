@@ -30,22 +30,43 @@ def update_schema(resource, request):
     print("object: {} is modified!".format(domain_key))
 
 
+# fired after a document inserted to the resource_definition collection
+def inserted_resource(items):
+
+    cursor, count = current_app.data.find("resource", parse_request("resource"), {})
+
+    resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
+
+    definition_data = items[0]
+    resource_attr_list = definition_data["object_schema"]
+    schema = generate_schema(resource_attr_list)
+
+    domain_key = definition_data["object_id"]
+    resource_definition["schema"] = schema
+
+    resource_definition["item_title"] = domain_key
+    resource_definition["url"] = domain_key
+    resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
+
+    current_app.register_resource(domain_key, resource_definition)
+    print("object: {} is modified!".format(domain_key))
+
+
 # 遍历属性列表，返回一个schema
 def generate_schema(resource_attr_list):
     # 初始一个空的schema
     schema = {}
     for resource_attr in resource_attr_list:
         field_type = resource_attr["type"]
-        field_map = FIELD_MAP[field_type]
+        field_map = copy.deepcopy(FIELD_MAP[field_type])
         if field_type == "string":
-            # field_map["required"] = resource_attr["required"]
-            # field_map["unique"] = resource_attr["unique"]
-            field_map["required"] = False
-            field_map["unique"] = False
+            field_map["required"] = resource_attr["required"]
+            field_map["unique"] = resource_attr["unique"]
 
         filed_key = resource_attr["id"]
         schema[filed_key] = field_map
 
+    print(schema)
     return schema
 
 
@@ -54,10 +75,10 @@ FIELD_MAP = {
         "type": "string",
         "minlength": 1,
         "maxlength": 15,
-        "required": True,
+        "required": False,
         # talk about hard constraints! For the purpose of the demo
         # 'lastname' is an API entry-point, so we need it to be unique.
-        # 'unique': True,
+        "unique": False,
     },
 }
 

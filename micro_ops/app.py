@@ -19,7 +19,7 @@ from micro_ops.extensions import (
     login_manager,
     migrate,
 )
-from micro_ops.event_hook import update_schema
+from micro_ops.event_hook import update_schema, inserted_resource
 
 
 class Query(ObjectType):
@@ -46,8 +46,9 @@ def create_app(config_object="micro_ops.settings"):
     """
     # app = Flask(__name__.split(".")[0])
     app = Eve(settings="eve_settings.py")
-    app.on_post_POST_resource += update_schema
-    app.on_post_PATCH_resource += update_schema
+    # app.on_post_POST_resource += update_schema
+    # app.on_post_PATCH_resource += update_schema
+    app.on_inserted_resource += inserted_resource
 
     app.add_url_rule(
         "/graphql",
