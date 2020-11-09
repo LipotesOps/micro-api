@@ -5,10 +5,13 @@ import json
 import copy
 
 from flask import current_app
+from eve.utils import parse_request
 
 
 # on_pre_<method> and a on_pre_<method>_<resource>
 def update_schema(resource, request):
+
+    cursor, count = current_app.data.find("resource", parse_request("resource"), {})
 
     resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
 
