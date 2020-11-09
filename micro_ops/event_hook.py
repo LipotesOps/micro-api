@@ -38,8 +38,10 @@ def generate_schema(resource_attr_list):
         field_type = resource_attr["type"]
         field_map = FIELD_MAP[field_type]
         if field_type == "string":
-            field_map["required"] = resource_attr["required"]
-            field_map["unique"] = resource_attr["unique"]
+            # field_map["required"] = resource_attr["required"]
+            # field_map["unique"] = resource_attr["unique"]
+            field_map["required"] = False
+            field_map["unique"] = False
 
         filed_key = resource_attr["id"]
         schema[filed_key] = field_map
