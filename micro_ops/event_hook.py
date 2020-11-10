@@ -39,6 +39,8 @@ def inserted_resource(items):
 
     definition_data = items[0]
     resource_attr_list = definition_data["object_schema"]
+    if len(resource_attr_list) == 0:
+        return
     schema = generate_schema(resource_attr_list)
 
     domain_key = definition_data["object_id"]
