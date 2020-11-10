@@ -30,7 +30,7 @@ def update_schema(resource, request):
     print("object: {} is modified!".format(domain_key))
 
 
-# fired after a document inserted to the resource_definition collection
+# fired after a document inserted to the resource_definition collection.
 def inserted_resource(items):
 
     cursor, count = current_app.data.find("resource", parse_request("resource"), {})
