@@ -1,0 +1,39 @@
+{
+    "item_title": "APP",
+    "url": "APP",
+    "datasource": {
+        "source": "resource_APP"
+    },
+    "additional_lookup": {
+        "url": "regex("[\\w
+        ]+")",
+        "field": "name"
+    },
+    "cache_control": "max-age=10,must-revalidate",
+    "cache_expires": 10,
+    "schema": {
+        "name": {
+            "type": "string",
+            "minlength": 1,
+            "maxlength": 15,
+            "required": "false",
+            "unique": "false"
+        },
+        "school": {
+            "type": "string",
+            "minlength": 1,
+            "maxlength": 15,
+            "required": "false",
+            "unique": "false"
+        },
+        "IP": {
+            "type": "string",
+            "minlength": 1,
+            "maxlength": 15,
+            "required": "false",
+            "unique": "false"
+        }
+    },
+    "soft_delete": True,
+    "versioning": False
+}
