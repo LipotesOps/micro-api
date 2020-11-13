@@ -54,6 +54,33 @@ def inserted_resource(items):
     print("object: {} is modified!".format(domain_key))
 
 
+# fired after a document updated to the resource_definition collection.
+def updated_resource(updates, original):
+
+    cursor, count = current_app.data.find("resource", parse_request("resource"), {})
+
+    original_data = copy.deepcopy(original)
+    original_data["object_schema"] = updates["object_schema"]
+
+    definition_data = original_data
+    resource_attr_list = definition_data["object_schema"]
+    if len(resource_attr_list) == 0:
+        return
+    schema = generate_schema(resource_attr_list)
+
+    domain_key = definition_data["object_id"]
+
+    resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
+    resource_definition["schema"] = schema
+
+    resource_definition["item_title"] = domain_key
+    resource_definition["url"] = domain_key
+    resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
+
+    current_app.register_resource(domain_key, resource_definition)
+    print("object: {} is modified!".format(domain_key))
+
+
 # 遍历属性列表，返回一个schema
 def generate_schema(resource_attr_list):
     # 初始一个空的schema

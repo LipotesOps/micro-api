@@ -19,7 +19,7 @@ from micro_ops.extensions import (
     login_manager,
     migrate,
 )
-from micro_ops.event_hook import update_schema, inserted_resource
+from micro_ops.event_hook import update_schema, inserted_resource, updated_resource
 
 
 class Query(ObjectType):
@@ -49,6 +49,7 @@ def create_app(config_object="micro_ops.settings"):
     # app.on_post_POST_resource += update_schema
     # app.on_post_PATCH_resource += update_schema
     app.on_inserted_resource += inserted_resource
+    app.on_updated_resource += updated_resource
 
     app.add_url_rule(
         "/graphql",
