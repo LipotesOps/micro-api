@@ -32,6 +32,10 @@ schema = {
     },
     # 模型描述
     "memo": {"type": "string", "maxlength": 250},
+    # fa-icon
+    "icon": {"type": "string", "maxlength": 250, "default": "plus"},
+    # color
+    "color": {"type": "string", "maxlength": 250, "default": "red"},
     # An embedded 'strongly-typed' dictionary.
     "category": {
         "type": "dict",
