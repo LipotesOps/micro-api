@@ -25,7 +25,22 @@ def register_item(item):
     """
     docstring
     """
-    pass
+    resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
+    definition_data = item
+    resource_attr_list = definition_data["object_schema"]
+    if len(resource_attr_list) == 0:
+        return
+    schema = generate_schema(resource_attr_list)
+
+    domain_key = definition_data["object_id"]
+    resource_definition["schema"] = schema
+
+    resource_definition["item_title"] = domain_key
+    resource_definition["url"] = domain_key
+    resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
+
+    current_app.register_resource(domain_key, resource_definition)
+    print("object: {} is modified!".format(domain_key))
 
 
 # on_pre_<method> and a on_pre_<method>_<resource>
