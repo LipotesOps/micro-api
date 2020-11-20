@@ -7,6 +7,12 @@ import copy
 from flask import current_app
 from eve.utils import parse_request
 
+# init register resource definition
+# 启动时遍历已有的resource definition
+def init_register():
+    # cursor, count = current_app.data.find("resource", parse_request("resource"), {})
+    pass
+
 
 # on_pre_<method> and a on_pre_<method>_<resource>
 def update_schema(resource, request):
@@ -30,6 +36,7 @@ def update_schema(resource, request):
     print("object: {} is modified!".format(domain_key))
 
 
+# database event
 # fired after a document inserted to the resource_definition collection.
 def inserted_resource(items):
 
