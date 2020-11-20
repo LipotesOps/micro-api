@@ -10,7 +10,21 @@ from eve.utils import parse_request
 # init register resource definition
 # 启动时遍历已有的resource definition
 def init_register():
-    # cursor, count = current_app.data.find("resource", parse_request("resource"), {})
+    # app.data.init_app(app)
+    app = current_app._get_current_object()
+    db_client = app.data.pymongo().db
+    cursor = db_client["resource_definition"].find()
+    for item in cursor:
+        print(item)
+        register_item(item)
+    pass
+
+
+# pub register an item
+def register_item(item):
+    """
+    docstring
+    """
     pass
 
 
