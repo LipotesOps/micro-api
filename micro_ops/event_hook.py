@@ -15,8 +15,13 @@ def init_register():
     db_client = app.data.pymongo().db
     cursor = db_client["resource_definition"].find()
     for item in cursor:
-        print(item)
-        register_item(item)
+        # print(item)
+        try:
+            register_item(item)
+        except BaseException as identifier:
+            print(identifier)
+        finally:
+            pass
     pass
 
 
@@ -40,7 +45,7 @@ def register_item(item):
     resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
 
     current_app.register_resource(domain_key, resource_definition)
-    print("object: {} is modified!".format(domain_key))
+    print("object: {} is modified and now is registered!".format(domain_key))
 
 
 # on_pre_<method> and a on_pre_<method>_<resource>
@@ -131,7 +136,7 @@ def generate_schema(resource_attr_list):
         filed_key = resource_attr["id"]
         schema[filed_key] = field_map
 
-    print(schema)
+    # print(schema)
     return schema
 
 
