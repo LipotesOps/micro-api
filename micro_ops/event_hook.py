@@ -45,7 +45,7 @@ def register_item(item):
     resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
 
     current_app.register_resource(domain_key, resource_definition)
-    print("object: {} is modified and now is registered!".format(domain_key))
+    print("object: {} is modified and now is registered again!".format(domain_key))
 
 
 # on_pre_<method> and a on_pre_<method>_<resource>
@@ -67,7 +67,7 @@ def update_schema(resource, request):
     resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
 
     current_app.register_resource(domain_key, resource_definition)
-    print("object: {} is modified!".format(domain_key))
+    print("object: {} is modified and now is registered again!".format(domain_key))
 
 
 # database event
@@ -92,7 +92,7 @@ def inserted_resource(items):
     resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
 
     current_app.register_resource(domain_key, resource_definition)
-    print("object: {} is modified!".format(domain_key))
+    print("object: {} is modified and now is registered again!".format(domain_key))
 
 
 # fired after a document updated to the resource_definition collection.
@@ -119,7 +119,7 @@ def updated_resource(updates, original):
     resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
 
     current_app.register_resource(domain_key, resource_definition)
-    print("object: {} is modified!".format(domain_key))
+    print("object: {} is modified and now is registered again!".format(domain_key))
 
 
 # 遍历属性列表，返回一个schema
