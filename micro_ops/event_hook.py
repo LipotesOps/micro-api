@@ -208,5 +208,5 @@ DEFINITION_TEMPLATE = {
     # 'item_methods': ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
     "schema": SCHEMA_TEMPLATE,
     "soft_delete": True,
-    "versioning": False,
+    "versioning": True,
 }
