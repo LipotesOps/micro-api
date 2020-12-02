@@ -54,6 +54,9 @@ schema = {
     "object_schema": {
         "type": "list",
     },
+    "relation_schema": {
+        "type": "list",
+    },
 }
 
 resource_definition = {

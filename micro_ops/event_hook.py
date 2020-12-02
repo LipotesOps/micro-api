@@ -96,6 +96,7 @@ def inserted_resource(items):
 
 
 # fired after a document updated to the resource_definition collection.
+# database
 def updated_resource(updates, original):
 
     cursor, count = current_app.data.find("resource", parse_request("resource"), {})
