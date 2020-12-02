@@ -102,7 +102,7 @@ def updated_resource(updates, original):
     cursor, count = current_app.data.find("resource", parse_request("resource"), {})
 
     original_data = copy.deepcopy(original)
-    original_data["object_schema"] = updates["object_schema"]
+    original_data["object_schema"] = updates.get("object_schema", [])
 
     definition_data = original_data
     resource_attr_list = definition_data["object_schema"]
