@@ -79,4 +79,5 @@ resource_definition = {
     # 'item_methods': ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
     "schema": schema,
     "soft_delete": True,
+    "versioning": True,
 }

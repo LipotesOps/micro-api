@@ -43,5 +43,6 @@ category = {
     # most global settings can be overridden at resource level
     "resource_methods": ["GET", "POST"],
     "versioning": True,
+    "soft_delete": True,
     "schema": schema,
 }
