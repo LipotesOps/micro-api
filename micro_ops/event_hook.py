@@ -17,35 +17,12 @@ def init_register():
     for item in cursor:
         # print(item)
         try:
-            register_item(item)
+            _register_item(item)
         except BaseException as identifier:
             print(identifier)
         finally:
             pass
     pass
-
-
-# pub register an item
-def register_item(item):
-    """
-    docstring
-    """
-    resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
-    definition_data = item
-    resource_attr_list = definition_data["object_schema"]
-    if len(resource_attr_list) == 0:
-        return
-    schema = generate_schema(resource_attr_list)
-
-    domain_key = definition_data["object_id"]
-    resource_definition["schema"] = schema
-
-    resource_definition["item_title"] = domain_key
-    resource_definition["url"] = domain_key
-    resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
-
-    current_app.register_resource(domain_key, resource_definition)
-    print("object: {} is modified and now is registered again!".format(domain_key))
 
 
 # on_pre_<method> and a on_pre_<method>_<resource>
@@ -57,7 +34,7 @@ def update_schema(resource, request):
 
     definition_data = json.loads(resource.data)
     resource_attr_list = definition_data["object_schema"]
-    schema = generate_schema(resource_attr_list)
+    schema = _generate_schema(resource_attr_list)
 
     domain_key = definition_data["object_id"]
     resource_definition["schema"] = schema
@@ -74,15 +51,13 @@ def update_schema(resource, request):
 # fired after a document inserted to the resource_definition collection.
 def inserted_resource(items):
 
-    cursor, count = current_app.data.find("resource", parse_request("resource"), {})
-
     resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
 
     definition_data = items[0]
     resource_attr_list = definition_data["object_schema"]
     if len(resource_attr_list) == 0:
         return
-    schema = generate_schema(resource_attr_list)
+    schema = _generate_schema(resource_attr_list)
 
     domain_key = definition_data["object_id"]
     resource_definition["schema"] = schema
@@ -95,11 +70,9 @@ def inserted_resource(items):
     print("object: {} is modified and now is registered again!".format(domain_key))
 
 
+# database event
 # fired after a document updated to the resource_definition collection.
-# database
 def updated_resource(updates, original):
-
-    cursor, count = current_app.data.find("resource", parse_request("resource"), {})
 
     original_data = copy.deepcopy(original)
     original_data["object_schema"] = updates.get("object_schema", [])
@@ -108,11 +81,34 @@ def updated_resource(updates, original):
     resource_attr_list = definition_data["object_schema"]
     if len(resource_attr_list) == 0:
         return
-    schema = generate_schema(resource_attr_list)
+    schema = _generate_schema(resource_attr_list)
 
     domain_key = definition_data["object_id"]
 
     resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
+    resource_definition["schema"] = schema
+
+    resource_definition["item_title"] = domain_key
+    resource_definition["url"] = domain_key
+    resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
+
+    current_app.register_resource(domain_key, resource_definition)
+    print("object: {} is modified and now is registered again!".format(domain_key))
+
+
+# register an item
+def _register_item(item):
+    """
+    docstring
+    """
+    resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
+    definition_data = item
+    resource_attr_list = definition_data["object_schema"]
+    if len(resource_attr_list) == 0:
+        return
+    schema = _generate_schema(resource_attr_list)
+
+    domain_key = definition_data["object_id"]
     resource_definition["schema"] = schema
 
     resource_definition["item_title"] = domain_key
@@ -124,7 +120,7 @@ def updated_resource(updates, original):
 
 
 # 遍历属性列表，返回一个schema
-def generate_schema(resource_attr_list):
+def _generate_schema(resource_attr_list):
     # 初始一个空的schema
     schema = {}
     for resource_attr in resource_attr_list:
