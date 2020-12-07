@@ -7,6 +7,11 @@ import copy
 from flask import current_app
 from eve.utils import parse_request
 
+
+class EventHook(object):
+    pass
+
+
 # init register resource definition
 # 启动时遍历已有的resource definition
 def init_register():
@@ -17,7 +22,8 @@ def init_register():
     for item in cursor:
         # print(item)
         try:
-            _register_item(item)
+            definition_data = item
+            _register_once(definition_data)
         except BaseException as identifier:
             print(identifier)
         finally:
@@ -51,67 +57,49 @@ def update_schema(resource, request):
 # fired after a document inserted to the resource_definition collection.
 def inserted_resource(items):
 
-    resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
-
     definition_data = items[0]
-    resource_attr_list = definition_data["object_schema"]
-    if len(resource_attr_list) == 0:
-        return
-    schema = _generate_schema(resource_attr_list)
 
-    domain_key = definition_data["object_id"]
-    resource_definition["schema"] = schema
-
-    resource_definition["item_title"] = domain_key
-    resource_definition["url"] = domain_key
-    resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
-
-    current_app.register_resource(domain_key, resource_definition)
-    print("object: {} is modified and now is registered again!".format(domain_key))
+    _register_once(definition_data)
 
 
 # database event
 # fired after a document updated to the resource_definition collection.
-def updated_resource(updates, original):
+def updated_resource(updates, origin):
 
-    original_data = copy.deepcopy(original)
-    original_data["object_schema"] = updates.get("object_schema", [])
+    origin_data = copy.deepcopy(origin)
+    if len(updates.get("object_schema", [])) != 0:
+        origin_data["object_schema"] = updates.get("object_schema", [])
 
-    definition_data = original_data
-    resource_attr_list = definition_data["object_schema"]
-    if len(resource_attr_list) == 0:
-        return
-    schema = _generate_schema(resource_attr_list)
+    if len(updates.get("relation_schema", [])) != 0:
+        origin_data["relation_schema"] = updates.get("relation_schema", [])
+
+    definition_data = origin_data
+    _register_once(definition_data)
+
+
+# register once
+def _register_once(definition_data):
+    resource_attr_list = definition_data.get("object_schema", [])
+    attr_schema = {}
+    if len(resource_attr_list) != 0:
+        attr_schema = _generate_schema(resource_attr_list)
+
+    relation_list = definition_data.get("relation_schema", [])
+    relation_schema = {}
+    if len(relation_list) != 0:
+        left_list = []
+        for relation in relation_list:
+            relation_left = relation.get("left", {})
+            left_list.append(relation_left)
+
+        relation_schema = _generate_schema(left_list)
 
     domain_key = definition_data["object_id"]
 
     resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
-    resource_definition["schema"] = schema
+    merged_schema = {**attr_schema, **relation_schema}
+    resource_definition["schema"] = merged_schema
 
-    resource_definition["item_title"] = domain_key
-    resource_definition["url"] = domain_key
-    resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
-
-    current_app.register_resource(domain_key, resource_definition)
-    print("object: {} is modified and now is registered again!".format(domain_key))
-
-
-# register an item
-def _register_item(item):
-    """
-    docstring
-    """
-    resource_definition = copy.deepcopy(DEFINITION_TEMPLATE)
-    definition_data = item
-    resource_attr_list = definition_data["object_schema"]
-    if len(resource_attr_list) == 0:
-        return
-    schema = _generate_schema(resource_attr_list)
-
-    domain_key = definition_data["object_id"]
-    resource_definition["schema"] = schema
-
-    resource_definition["item_title"] = domain_key
     resource_definition["url"] = domain_key
     resource_definition["datasource"]["source"] = "resource_{}".format(domain_key)
 
@@ -147,6 +135,7 @@ FIELD_MAP = {
         # 'lastname' is an API entry-point, so we need it to be unique.
         "unique": False,
     },
+    "relation": {"type": "list"},
 }
 
 SCHEMA_TEMPLATE = {
