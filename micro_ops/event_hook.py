@@ -135,7 +135,7 @@ FIELD_MAP = {
         # 'lastname' is an API entry-point, so we need it to be unique.
         "unique": False,
     },
-    "relation": {"type": "list"},
+    "list": {"type": "list"},
 }
 
 SCHEMA_TEMPLATE = {
