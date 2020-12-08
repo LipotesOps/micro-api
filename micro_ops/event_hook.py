@@ -23,7 +23,7 @@ def init_register():
         # print(item)
         try:
             definition_data = item
-            _register_once(definition_data)
+            _register_one(definition_data)
         except BaseException as identifier:
             print(identifier)
         finally:
@@ -59,7 +59,7 @@ def inserted_resource(items):
 
     definition_data = items[0]
 
-    _register_once(definition_data)
+    _register_one(definition_data)
 
 
 # database event
@@ -74,11 +74,11 @@ def updated_resource(updates, origin):
         origin_data["relation_schema"] = updates.get("relation_schema", [])
 
     definition_data = origin_data
-    _register_once(definition_data)
+    _register_one(definition_data)
 
 
 # register once
-def _register_once(definition_data):
+def _register_one(definition_data):
     resource_attr_list = definition_data.get("object_schema", [])
     attr_schema = {}
     if len(resource_attr_list) != 0:
