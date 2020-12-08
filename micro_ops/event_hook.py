@@ -118,6 +118,12 @@ def _generate_schema(resource_attr_list):
             field_map["required"] = resource_attr["required"]
             field_map["unique"] = resource_attr["unique"]
 
+        # relations
+        if field_type == "list":
+            field_map["schema"]["data_relation"]["resource"] = resource_attr[
+                "resourceId"
+            ]
+
         filed_key = resource_attr["id"]
         schema[filed_key] = field_map
 
