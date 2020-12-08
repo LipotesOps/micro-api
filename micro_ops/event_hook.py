@@ -135,7 +135,23 @@ FIELD_MAP = {
         # 'lastname' is an API entry-point, so we need it to be unique.
         "unique": False,
     },
-    "list": {"type": "list"},
+    "list": {
+        "type": "list",
+        "schema": {
+            "type": "dict",
+            "schema": {
+                "_id": {"type": "objectid"},
+                "_version": {"type": "integer"},
+                "name": {"type": "string"},
+            },
+            "data_relation": {
+                "resource": "category",
+                "field": "_id",
+                "embeddable": True,
+                "version": True,
+            },
+        },
+    },
 }
 
 SCHEMA_TEMPLATE = {
