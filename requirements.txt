@@ -125,7 +125,7 @@ pytzdata==2020.1
 PyYAML==5.3.1
 regex==2020.10.15
 requests==2.24.0
-Rx==1.6.1
+Rx==3.1.1
 setproctitle==1.1.10
 simplejson==3.17.2
 six==1.15.0
