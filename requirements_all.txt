@@ -152,7 +152,7 @@ WebTest==2.0.35
 Werkzeug==0.16.1
 wmctrl==0.3
 WTForms==2.3.3
-zipp==3.3.0
+zipp==3.4.0
 zope.deprecation==4.4.0
 zope.event==4.5.0
 zope.interface==5.1.2
