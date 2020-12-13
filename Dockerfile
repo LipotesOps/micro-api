@@ -1,54 +1,35 @@
-# ================================== BUILDER ===================================
-ARG INSTALL_PYTHON_VERSION=${INSTALL_PYTHON_VERSION:-PYTHON_VERSION_NOT_SET}
-ARG INSTALL_NODE_VERSION=${INSTALL_NODE_VERSION:-NODE_VERSION_NOT_SET}
+FROM centos:centos7.9.2009
 
-FROM node:${INSTALL_NODE_VERSION}-buster-slim AS node
-FROM python:${INSTALL_PYTHON_VERSION}-slim-buster AS builder
+# 设置编码
+ENV LANG en_US.UTF-8
+# 同步时间
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-WORKDIR /app
+# 1. 安装基本依赖
+RUN yum update -y && yum install epel-release -y && yum install wget unzip epel-release nginx xz gcc automake zlib-devel openssl-devel supervisor  groupinstall development  libxslt-devel libxml2-devel libcurl-devel git libffi-devel -y
+#WORKDIR /var/www/
 
-COPY --from=node /usr/local/bin/ /usr/local/bin/
-COPY --from=node /usr/lib/ /usr/lib/
-COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY requirements requirements
-RUN pip install --no-cache -r requirements/prod.txt
+WORKDIR /home
 
-COPY package.json ./
-RUN npm install
+# 2. 准备python
+# RUN wget https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tar.xz
+COPY Python-3.8.6.tar.xz Python-3.8.6.tar.xz
+RUN xz -d Python-3.8.6.tar.xz && tar xvf Python-3.8.6.tar && cd Python-3.8.6 && ./configure && make && make install
 
-COPY webpack.config.js autoapp.py ./
-COPY micro_ops micro_ops
-COPY assets assets
-COPY .env.example .env
-RUN npm run-script build
+RUN rm -f Python-3.8.6.tar.xz
 
-# ================================= PRODUCTION =================================
-FROM python:${INSTALL_PYTHON_VERSION}-slim-buster as production
+COPY requirements.txt /home/requirements.txt
 
-WORKDIR /app
 
-RUN useradd -m sid
-RUN chown -R sid:sid /app
-USER sid
-ENV PATH="/home/sid/.local/bin:${PATH}"
-
-COPY --from=builder --chown=sid:sid /app/micro_ops/static /app/micro_ops/static
-COPY requirements requirements
-RUN pip install --no-cache --user -r requirements/prod.txt
-
-COPY supervisord.conf /etc/supervisor/supervisord.conf
-COPY supervisord_programs /etc/supervisor/conf.d
-
-COPY . .
+RUN pip3 config set global.index-url http://mirrors.aliyun.com/pypi/simple
+RUN pip3 config set install.trusted-host mirrors.aliyun.com
+RUN pip3 install -U pip
+RUN python3 -m pip install --no-cache -r requirements.txt
 
 EXPOSE 5000
-ENTRYPOINT ["/bin/bash", "shell_scripts/supervisord_entrypoint.sh"]
-CMD ["-c", "/etc/supervisor/supervisord.conf"]
 
-
-# ================================= DEVELOPMENT ================================
-FROM builder AS development
-RUN pip install --no-cache -r requirements/dev.txt
-EXPOSE 2992
-EXPOSE 5000
-CMD [ "npm", "start" ]
+RUN mkdir -p /home/micro-api
+WORKDIR /home/micro-api
+RUN export FLASK_APP=/home/micro-api/autoapp.py
+CMD ["python3", "-m flask run"]

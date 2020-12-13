@@ -1,58 +1,21 @@
-version: "3.6"
-
-x-build-args: &build_args
-  INSTALL_PYTHON_VERSION: 3.6
-  INSTALL_NODE_VERSION: 12
-
-x-default-volumes: &default_volumes
-  volumes:
-    - ./:/app
-    - node-modules:/app/node_modules
-    - ./dev.db:/tmp/dev.db
+version: "3"
 
 services:
-  flask-dev:
-    build:
-      context: .
-      target: development
-      args:
-        <<: *build_args
-    image: "micro_ops-development"
-    ports:
-      - "5000:5000"
-      - "2992:2992"
-    <<: *default_volumes
-
-  flask-prod:
-    build:
-      context: .
-      target: production
-      args:
-        <<: *build_args
-    image: "micro_ops-production"
-    ports:
-      - "5000:5000"
+  micro-api:
+    container_name: micro-api
+    image: micro-api
+    build: .
+    restart: always
     environment:
-      FLASK_ENV: production
-      FLASK_DEBUG: 0
-      LOG_LEVEL: info
-      GUNICORN_WORKERS: 4
-    <<: *default_volumes
+      - TZ=Asia/Shanghai
+      - FLASK_APP=/home/micro-api/autoapp.py
+    volumes:
+      - ${BASE_DIR}:/home/micro-api
+    ports:
+      - 5000:5000
+    entrypoint: flask run --host=0.0.0.0
 
-  manage:
-    build:
-      context: .
-      target: development
-      args:
-        <<: *build_args
-    entrypoint: flask
-    environment:
-      FLASK_ENV: production
-      FLASK_DEBUG: 0
-    image: "micro_ops-manage"
-    stdin_open: true
-    tty: true
-    <<: *default_volumes
-
-volumes:
-  node-modules:
+networks:
+  default:
+    external:
+      name: lipotes-network
