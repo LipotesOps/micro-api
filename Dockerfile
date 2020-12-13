@@ -22,9 +22,11 @@ RUN rm -f Python-3.8.6.tar.xz
 COPY requirements.txt /home/requirements.txt
 
 
-RUN pip3 config set global.index-url http://mirrors.aliyun.com/pypi/simple
+RUN pip3 config set global.index-url https://mirrors.aliyun.com/pypi/simple
 RUN pip3 config set install.trusted-host mirrors.aliyun.com
 RUN pip3 install -U pip
+# bugfix for installing pdbpp
+RUN pip3 install setuptools_scm
 RUN python3 -m pip install --no-cache -r requirements.txt
 
 EXPOSE 5000
