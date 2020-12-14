@@ -8,7 +8,7 @@ services:
     restart: always
     environment:
       - TZ=Asia/Shanghai
-      - FLASK_APP=/home/micro-api/autoapp.py
+      - FLASK_APP=autoapp.py
     volumes:
       - ${BASE_DIR}:/home/micro-api
       - ${BASE_DIR}/versioning.py:/usr/local/lib/python3.8/site-packages/eve/versioning.py
