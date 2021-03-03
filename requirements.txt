@@ -113,7 +113,7 @@ pyparsing==2.4.7
 pyrepl==0.9.0
 pyrsistent==0.17.3
 pytest
-python-daemon==2.2.4
+python-daemon==2.3.0
 python-dateutil==2.8.1
 python-dotenv==0.14.0
 python-editor==1.0.4
