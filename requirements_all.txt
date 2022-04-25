@@ -26,7 +26,7 @@ defusedxml==0.6.0
 dill==0.3.2
 dnspython==2.0.0
 docutils==0.16
-email-validator==1.1.1
+email-validator==1.2.0
 environs==8.0.0
 Eve==1.1.4
 Events==0.3
